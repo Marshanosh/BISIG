@@ -106,7 +106,7 @@ You can run these tests in two different ways depending on your preference:
 ### Execution Verification Screenshot
 Here is the PyTest unit test execution proof:
 
-![Screenshot 3: PyTest Unit Verification](assets/test_management_terminal.jpg)
+![Screenshot 3: PyTest Unit Verification](assets/unit_testing_pytest.jpg)
 
 ---
 
