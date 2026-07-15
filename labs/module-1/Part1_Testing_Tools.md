@@ -1,20 +1,25 @@
-# Module 1 — Laboratory Activities: Part 1 — Installing Testing Tools
+# Installing Testing Tools
 
-In this lab, we set up and configured local software testing tools to verify the BISIG ecosystem (our sign language translation platform). Instead of using expensive or cloud-dependent enterprise suites, we chose lightweight, open-source, and local-first alternatives that we can run directly in our terminal. 
+## Project: BISIG: Bidirectional Interface for Sign Intelligence & Gestures
+**Group 15 | Program: BSIT 3-2**
 
-This document explains why we chose each tool, how we installed them, and the steps to verify that they are working.
+**Project Team & Credits:**
+* **Karl Benjamin R. Bughaw** (Lead Developer, Project Founder & Full-Stack Engineer)
+* **Lennon Sanchez** (AI Researcher)
+* **Benz Azuela** (UI/UX Designer)
+* **Suzanne Hyacinth T. Habitan** (UI/UX Designer)
 
 ---
 
 ## 1. Functional / Manual Testing: Postman & Newman
 
-For functional and manual API testing, we selected **Postman** along with its command-line runner, **Newman**. 
+For functional and manual API testing, we selected **Postman** along with its command-line runner, **Newman**.
 
 ### Why we chose it
 Postman is the standard tool for testing REST APIs. However, relying purely on a graphical interface makes automated or headless testing difficult. By using **Newman**, we can run our Postman test collections directly from the bash terminal. This makes our testing process scriptable and integration-ready.
 
 ### Setup and Installation
-We installed Newman globally/locally using npm. Since this is a Node.js environment, we run it using `npx` to ensure the correct version is loaded without polluting global packages:
+We installed Newman locally using npm. Since this is a Node.js environment, we run it using `npx` to ensure the correct version is loaded:
 ```bash
 npx -y newman --version
 ```
@@ -30,11 +35,11 @@ Start the Python backend first, then run this command in your terminal:
 ```bash
 npx newman run labs/module-1/bisig.postman_collection.json
 ```
-Newman will execute the requests, run the embedded JavaScript assertions, and output a clean table showing the status of each test.
 
-### What screenshot to include here
-> [!TIP]
-> **Screenshot 1 (functional_newman.png)**: Run the command in your terminal and take a screenshot of the Newman console output. Ensure the screenshot shows the checkmarks (`✓`) next to the three API requests and the summary table at the bottom showing 6 executed assertions and 0 failures.
+### Execution Verification Screenshot
+Here is the actual terminal run showing the passing assertions:
+
+![Screenshot 1: Newman API Run](assets/functional_newman.jpg)
 
 ---
 
@@ -58,9 +63,10 @@ When executing the test suite, we run pytest with the `-v` (verbose) flag:
 ```
 This reads the unit tests in `test_example.py`, runs them, and outputs a complete log of each test case name, its class context, execution percentage, and the result status (`PASSED`) directly to the console.
 
-### What screenshot to include here
-> [!TIP]
-> **Screenshot 2 (test_management_terminal.png)**: Run the `.venv/bin/pytest -v labs/module-1/test_example.py` command in your terminal. Take a screenshot of the output, displaying the list of all 11 test cases and their green `PASSED` status labels printed directly in the shell.
+### Execution Verification Screenshot
+Here is the PyTest verbose console log output:
+
+![Screenshot 2: PyTest Verbose Run](assets/test_management_terminal.jpg)
 
 ---
 
@@ -78,13 +84,13 @@ We activated our Python virtual environment and installed pytest:
 ```
 
 ### Local Test Configuration
-Instead of using mock data or hardcoded placeholders, we wrote a comprehensive unit and integration test suite in [test_example.py](file:///workspaces/BISIG/labs/module-1/test_example.py) that directly tests the live VM environments and crawls the actual project database:
-1. **VM Filesystem Integrity (`TestVMFilesystemIntegrity`)**: Recursively walks the entire `Backend-API/videos` and `Backend-API/skeletons` folders on the VM disk using `os.walk` to assert that **every single** video file has a size > 0, and **every single** skeleton coordinates JSON is syntactically valid and structurally complete. It also audits the Google MediaPipe model binary paths.
+Instead of using mock data or hardcoded placeholders, we wrote a comprehensive unit and integration test suite in `test_example.py` that directly tests the live VM environments and crawls the actual project database:
+1. **VM Filesystem Integrity (`TestVMFilesystemIntegrity`)**: Recursively walks the entire `Backend-API/videos` and `Backend-API/skeletons` folders on the VM disk using `os.walk` to assert that every single video file has a size > 0, and every single skeleton coordinates JSON is syntactically valid and structurally complete.
 2. **On-the-fly MediaPipe Extraction Verification**: Invokes the actual Google MediaPipe landmark model APIs on the VM CPU to decode `hello.mp4` and track pose, hand, and face joints frame-by-frame. This performs real-world, heavy CPU-based machine learning joint calculations on the VM and validates the extracted 33 pose joint coordinate arrays.
 3. **Live VM Endpoint Integration (`TestLiveVMEndpoints`)**: Uses `httpx` to send live HTTP requests to the running FastAPI server in the VM (`http://127.0.0.1:8000`), verifying the root endpoint metadata, translation video mapping payloads, skeleton joint outputs, and 400 Bad Request error handlers against the live uvicorn server.
-4. **CDN & Hosting Connectivity Verification**: Directly queries the remote ASL Amazon S3 CDN bucket (`https://pocketsign.s3-us-west-2.amazonaws.com/`) and FSL local hosting server port (`http://161.118.197.176:8080/`) defined in `config.json` to verify network routing and asset storage accessibility.
-5. **Core Database Schema Checks (`TestCoreDictionaryFiles`)**: Validates the JSON array structure and keys of `Frontend/src/data/dictionary.json`, `fsl_dictionary.json`, and `verified_signs.json`.
-6. **Logic Loop Validation (`TestLogicExecutionOnRealDictionaryWords`)**: Tests text cleaning, tokenization, and character cleaning loops on all items loaded from the actual dictionaries.
+4. **CDN & Hosting Connectivity Verification**: Directly queries the remote ASL Amazon S3 CDN bucket and FSL local hosting server port defined in `config.json` to verify network routing and asset storage accessibility.
+5. **Core Database Checks (`TestCoreDictionaryFiles`)**: Validates the JSON array structure and keys of `dictionary.json` and `fsl_dictionary.json`.
+6. **Logic Loop Validation (`TestLogicExecutionOnRealDictionaryWords`)**: Tests text cleaning and tokenization loops on all items loaded from the actual dictionaries.
 
 ### How to Run and Verify
 You can run these tests in two different ways depending on your preference:
@@ -97,9 +103,10 @@ You can run these tests in two different ways depending on your preference:
   .venv/bin/pytest labs/module-1/test_example.py
   ```
 
-### What screenshot to include here
-> [!TIP]
-> **Screenshot 3 (unit_testing_pytest.png)**: Capture a screenshot of the terminal window after running the pytest command. It should show the Python and pytest version details, the test file execution bar, and the green `15 passed in 14.Xs` line.
+### Execution Verification Screenshot
+Here is the PyTest unit test execution proof:
+
+![Screenshot 3: PyTest Unit Verification](assets/test_management_terminal.jpg)
 
 ---
 
@@ -130,6 +137,7 @@ Run the tool to execute a complete diagnostic tree scan:
 ./labs/module-1/bisig_scanner.py
 ```
 
-### What screenshot to include here
-> [!TIP]
-> **Screenshot 4 (defect_tracking_cli.png)**: Run the `./labs/module-1/bisig_scanner.py` command in your terminal. Take a screenshot showing the dynamic terminal output—specifically displaying the visual folder/file tree annotated with the green `[Good]` tags or red compiler error lines.
+### Execution Verification Screenshot
+Here is the codebase scanner dynamic tree report:
+
+![Screenshot 4: Codebase Scanner Tree Run](assets/defect_tracking_cli.jpg)

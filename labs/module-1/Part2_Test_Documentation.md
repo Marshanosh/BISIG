@@ -47,27 +47,16 @@ We implement a unified, multi-layered local verification strategy:
 * **Hardware & VM Ports**: Sandbox container with ports `8000` (FastAPI), `8005` (S2T API), `8080` (Go Proxy), `3001` (Node Server), and `5173` (Vite) active.
 * **Database & Assets**: Local `db.sqlite` SQL engine, pre-downloaded Google MediaPipe landmarker binaries (`pose_landmarker.task`, etc.), and raw ASL/FSL MP4 clips.
 
-### 1.5 Schedule & Version Control History Matrix (Chronological Upstream Git Log)
+### 1.5 Schedule & Version Control History Matrix (Chronological Git Log)
 
 To establish an authentic record of the development cycle, the testing milestones are mapped directly to the complete chronological Git history of the main repository (`github.com/Golgrax/BISIG`) dating back over three months:
 
-| Date | Phase / Milestone | Target Scope & Build Changes | Git Commit Hash & Author | Build Impact on Testing |
-| :--- | :--- | :--- | :--- | :--- |
-| **2026-04-15** | Initial Core Setup | First import of core framework elements. | `f4d2bee` (Karl Benjamin Bughaw) | Established base directory structure for the translation models. |
-| **2026-04-17** | UI Action Handlers | UI click handlers, routing links, and doc import. | `2641c3a`, `4c13791`, `4969f40` (Karl Benjamin Bughaw) | Set up page navigation boundaries and structured baseline documentation drafts. |
-| **2026-05-21** | Vision Integration | Sign-to-Text WebSocket API and module cleanup. | `083cf58`, `2abc4e0`, `cd2fd93` (Marshanosh / Karl Benjamin Bughaw) | Enabled vision model matching endpoints and cleared stale config files. |
-| **2026-06-11** | Model Optimization | Gemma 4 model pipeline integration. | `fbc7d98` (Karl Benjamin Bughaw) | Loaded neural network weights for gesture token translation. |
-| **2026-06-18** | Environment Sync | Colab URL proxies, config setups, and codespace files. | `0394cf5`, `8fdd5d6`, `75a824d`, `bfad775`, `a9b622e` (Karl Benjamin Bughaw) | Synced model pipelines (`colab_config.json`) to resolve remote endpoints. |
-| **2026-06-20** | Startup Automation | Automated service startup and path configuration. | `334a271` & `e43bad8` (biggytippy / Karl Benjamin Bughaw) | Compiled `start_all.sh` to handle port cleaning (8000, 8005, 8080, 3001, 5173). |
-| **2026-06-22** | Docs Compilation | Technical documentation, user manuals, and presentation decks. | `ccd2772`, `4735625`, `c33867b`, `3e57241`, `86337f1`, `944a359` (biggytippy / Karl Benjamin Bughaw) | Reorganized the design specs and math formulas into `/documents/` folder. |
-| **2026-06-24** | Layout Reorganization | Reorganized document folders and deleted paper.docx. | `8bfbe77`, `2035f34`, `ae350d3`, `4d4dd94`, `f4220c1`, `27df659`, `679fa8e`, `605a912`, `fc7b3c9` (Karl Benjamin Bughaw / arod821) | Removed stale duplicates; renamed manuals and established consistent reference routes. |
-| **2026-06-25** | UI Responsive Audits | Responsive layouts and dictionary pagination menu stability. | `71d9d51` & `427a1c2` (arod821 / Karl Benjamin Bughaw) | Restructured login overlays and navigation ordering to ensure UI-based login validations pass. |
-| **2026-07-01** | Build Freeze | Lock files update and release preparation. | `e886051` (biggytippy) | Locked package installations to ensure reproducible local test environments. |
-| **2026-07-15** | Quality Test Execution | Live pytest test suite execution & scanner tree compiler checks. | Workspace HEAD (biggytippy) | Executed PyTest assertions (including dynamic MediaPipe calculations) and codebase compilation checks. |
+![Version Control History Matrix](assets/git_log_matrix.jpg)
+
 
 ### 1.6 Entry and Exit Criteria
 * **Entry Criteria**: Node auth server is running on port 3001, Vite client is active on port 5173, FastAPI translation API is active on port 8000, and Go proxy is running on port 8080.
-* **Exit Criteria**: All 10 ecosystem test cases execute cleanly with high pass rate, static tree scanner shows zero compilation errors, and Puppeteer builds documentation PDFs successfully.
+* **Exit Criteria**: All 15 target test cases execute cleanly with high pass rate, static tree scanner shows zero compilation errors, and Puppeteer builds documentation PDFs successfully.
 
 ---
 
@@ -238,13 +227,9 @@ Based on the recorded functional test results, the system performed according to
 
 ### 3.2 Test Execution Results
 
-| Module | Executed | Passed | Failed | Pending |
-| :--- | :---: | :---: | :---: | :---: |
-| Authentication & Session | 6 | 6 | 0 | 0 |
-| Translation Engine (NLP & ML) | 5 | 5 | 0 | 0 |
-| Go Media Proxy & Cache | 2 | 2 | 0 | 0 |
-| Document Compiler Engine | 2 | 2 | 0 | 0 |
-| **Total** | **15** | **15** | **0** | **0** |
+Here is the quality assurance summary showing execution results metrics captured from the test cycle:
+
+![Test Summary Report](assets/test_summary_report.jpg)
 
 #### Overall Results
 * **Test execution coverage**: 93.7% requirements coverage (as local interface elements and non-functional variables remain outside the scripted suite).
@@ -256,13 +241,8 @@ Based on the recorded functional test results, the system performed according to
 
 No defects were recorded during the execution of the 15 documented test cases.
 
-| Severity | Number of Defects |
-| :--- | :---: |
-| Critical | 0 |
-| High | 0 |
-| Medium | 0 |
-| Low | 0 |
-| **Total** | **0** |
+![Defects Summary Report](assets/defects_found_report.jpg)
+
 
 Although no defects were found, future testing should continue to check for issues that may only appear under different browsers, physical mobile devices, varying network conditions, high simultaneous user loads, or remote API downtimes.
 
@@ -307,4 +287,29 @@ Additional non-functional testing should be conducted for:
 ### 3.6 Overall Conclusion
 The functional test cycle was successfully completed, with 15 out of 15 planned test cases passing and no recorded defects. The system met the test plan’s numerical exit requirements of complete execution, high pass rate, and no remaining critical defects.
 
-Based on the available results, the BISIG ecosystem is functionally stable for the tested features. However, final system acceptance should also consider the completion of performance testing, multi-user stress testing, and formal User Acceptance Testing (UAT) with sign language users before production deployment.
+Based on the available results, the BISIG platform is functionally stable for the tested features. However, final system acceptance should also consider the completion of performance testing, multi-user stress testing, and formal User Acceptance Testing (UAT) with sign language users before production deployment.
+
+---
+
+## 4. Recommendations, Mitigation Strategies, and Action Items
+
+To address the areas for improvement identified during this test cycle, the following technical action items and design guidelines are recommended for implementation:
+
+### 4.1 AI Engine & MediaPipe Landmark Optimization
+* **Pose Landmark Frame Sub-sampling**: Implement a frame selection skip-rate in `video_service.py` to only execute joint calculations on every third frame (`step = 3`), interpolating the coordinates of intermediate frames using our linear interpolation formula:
+  $$\alpha = \frac{i}{N + 1}$$
+  This reduces VM CPU load by **66.7%** without degrading skeleton rendering quality.
+* **Wrist-Anchoring Boundary Mitigation**: Add an activity threshold check in `skeleton_service.py` to suppress joint "flickers" when hand landmarks drop below **0.4** confidence. Instead of popping to neutral pose, hold the coordinates of the last known frames anchored relative to the wrist joints (`LEFT_WRIST=15`, `RIGHT_WRIST=16`).
+
+### 4.2 Database Concurrency & Authentication Integrity
+* **SQLite Write-Ahead Logging (WAL) Mode**: Configure the Express.js auth server database handler to run in WAL mode (`db.run("PRAGMA journal_mode=WAL")`). This enables concurrent read operations while writes are active, preventing server timeout errors (`SQLITE_BUSY: database is locked`) when multiple volunteers submit sign translations simultaneously.
+* **Token Rotation**: Shift volunteer authorization from standard sqlite session cookies to rotating JWT tokens, stored securely in HTTP-only cookies with a 15-minute expiration period.
+
+### 4.3 Frontend Canvas Rendering Stability
+* **Cross-Browser CSS Scaling**: Standardize the canvas scale factors inside `SkeletonPlayer.tsx` for high-DPI displays. Use the device pixel ratio (`window.devicePixelRatio`) to set the canvas coordinate buffer dimensions, avoiding coordinate offset alignment errors in Safari and Chrome.
+* **Hardware Acceleration Handshake**: Enable CSS properties (`will-change: transform`) on the canvas parent container to force graphics rendering on the device GPU, lowering CPU consumption on old devices.
+
+### 4.4 Automated Testing Integration (CI/CD Gates)
+* **Pre-commit Quality Gates**: Package `bisig_scanner.py` and `test_example.py` into a Git pre-push hook. Rejects any code push that contains syntax errors or fails the 15-case test suite.
+* **Newman Automated Collection Runs**: Set up GitHub Actions to trigger Newman collection runs on every pull request, verifying the API endpoints against a containerized FastAPI mock service before merging features to `main`.
+
